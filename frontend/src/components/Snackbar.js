@@ -1,5 +1,3 @@
-// Snackbar.js
-// Beautiful snackbar component for displaying pipeline analysis results
 
 import { useState, useEffect } from 'react';
 
@@ -14,8 +12,6 @@ export const Snackbar = ({
   useEffect(() => {
     if (isVisible) {
       setIsAnimating(true);
-      
-      // Auto-hide after specified duration
       const timer = setTimeout(() => {
         handleClose();
       }, autoHideDuration);
@@ -28,7 +24,7 @@ export const Snackbar = ({
     setIsAnimating(false);
     setTimeout(() => {
       onClose();
-    }, 300); // Wait for animation to complete
+    }, 300);
   };
 
   if (!isVisible) return null;
@@ -54,7 +50,6 @@ export const Snackbar = ({
       fontFamily: 'system-ui, -apple-system, sans-serif'
     };
 
-    // Color scheme based on DAG status
     if (is_dag) {
       return {
         ...baseStyle,

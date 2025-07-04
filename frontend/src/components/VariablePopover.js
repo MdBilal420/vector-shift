@@ -1,5 +1,3 @@
-// VariablePopover.js
-// Popover component for selecting variables in text fields
 
 import { useEffect, useRef } from 'react';
 import { useStore } from '../store';
@@ -15,14 +13,12 @@ export const VariablePopover = ({
   const { nodes } = useStore();
   const popoverRef = useRef(null);
 
-  // Get available input nodes (excluding current node)
   const getInputNodes = () => {
     return nodes.filter(node => 
       node.type === 'customInput' && node.id !== currentNodeId
     );
   };
-
-  // Close popover when clicking outside
+  
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (popoverRef.current && !popoverRef.current.contains(event.target)) {

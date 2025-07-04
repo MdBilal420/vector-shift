@@ -97,7 +97,7 @@ export const PipelineUI = () => {
               position,
               data: getInitNodeData(nodeID, type),
             };
-
+      
             console.log('Adding new node:', newNode);
             addNode(newNode);
           }
@@ -147,7 +147,7 @@ export const PipelineUI = () => {
                 connectionLineType='smoothstep'
                 style={{ background: 'transparent' }}
                 fitView
-            > 
+            >   
                 <Background color="#aaa" gap={gridSize} />
                 <Controls />
                 <MiniMap 

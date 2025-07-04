@@ -6,30 +6,25 @@ import { Snackbar } from './components/Snackbar';
 
 export const SubmitButton = () => {
     const [isExecuting, setIsExecuting] = useState(false);
-    const [backendResults, setBackendResults] = useState(null);
     const [error, setError] = useState(null);
     const [showSnackbar, setShowSnackbar] = useState(false);
     const [snackbarResult, setSnackbarResult] = useState(null);
     
     const { nodes, edges } = useStore();
 
-    // Show snackbar with backend results
     const showBackendSnackbar = (result) => {
         setSnackbarResult(result);
         setShowSnackbar(true);
     };
 
-    // Handle snackbar close
     const handleSnackbarClose = () => {
         setShowSnackbar(false);
         setSnackbarResult(null);
     };
 
-    // Send pipeline data to backend
     const sendToBackend = async (nodes, edges) => {
         try {
-            console.log('Sending pipeline to backend...', { nodes: nodes.length, edges: edges.length });
-            
+                    
             const response = await fetch('http://localhost:8000/pipelines/parse', {
                 method: 'POST',
                 headers: {
@@ -46,9 +41,7 @@ export const SubmitButton = () => {
             }
 
             const result = await response.json();
-            console.log('Backend response:', result);
             
-            // Show the snackbar with backend results
             showBackendSnackbar(result);
             
             return result;
@@ -66,14 +59,9 @@ export const SubmitButton = () => {
 
         setIsExecuting(true);
         setError(null);
-        setBackendResults(null);
 
         try {
-            // Send pipeline to backend and show snackbar
-            console.log('Sending pipeline to backend...');
-            const backendResponse = await sendToBackend(nodes, edges);
-            setBackendResults(backendResponse);
-            console.log('Backend analysis completed:', backendResponse);
+            await sendToBackend(nodes, edges);
             
         } catch (err) {
             console.error('Pipeline processing failed:', err);
@@ -124,34 +112,32 @@ export const SubmitButton = () => {
 
     return (
         <>
-            <div style={containerStyle}>
-                <button 
-                    type="submit"
-                    style={buttonStyle}
-                    onMouseEnter={(e) => {
-                        if (!isExecuting) {
-                            Object.assign(e.target.style, { ...buttonStyle, ...hoverStyle });
-                        }
-                    }}
-                    onMouseLeave={(e) => {
-                        Object.assign(e.target.style, buttonStyle);
-                    }}
-                    onClick={handleSubmit}
-                    disabled={isExecuting}
-                >
+        <div style={containerStyle}>
+            <button 
+                type="submit"
+                style={buttonStyle}
+                onMouseEnter={(e) => {
+                    if (!isExecuting) {
+                        Object.assign(e.target.style, { ...buttonStyle, ...hoverStyle });
+                    }
+                }}
+                onMouseLeave={(e) => {
+                    Object.assign(e.target.style, buttonStyle);
+                }}
+                onClick={handleSubmit}
+                disabled={isExecuting}
+            >
                     {isExecuting ? 'Analyzing...' : 'Submit Pipeline'}
-                </button>
+            </button>
 
-                {/* Error display */}
-                {error && (
-                    <div style={errorStyle}>
+            {error && (
+                <div style={errorStyle}>
                         <strong>Error:</strong><br />
-                        {error}
-                    </div>
-                )}
-            </div>
+                    {error}
+                </div>
+            )}
+                </div>
 
-            {/* Snackbar for pipeline analysis results */}
             <Snackbar
                 isVisible={showSnackbar}
                 onClose={handleSnackbarClose}
